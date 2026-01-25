@@ -7,6 +7,7 @@ export type Wine = {
   name: string;
   subtitle?: Translated;
   note: Translated;
+  techSheetUrl?: string;
   techSheetMessage?: Translated;
   imageUrl?: string;
 };

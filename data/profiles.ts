@@ -7,6 +7,7 @@ export type Wine = {
   name: string;
   subtitle?: Translated;
   note: Translated;
+  techSheetUrl?: string;
   techSheetMessage?: Translated;
   imageUrl?: string;
 };
@@ -196,7 +197,6 @@ export const profiles: Profile[] = [
     whatsappE164: "+5492612191072",
     catalogUrl: "https://cincosentidos.ar/",
     website: "https://cinco-sentidos.com.ar/",
-    instagram: "https://instagram.com/juanf.cinco",
     instagram: "https://instagram.com/cincosentidoswine",
     linkedin: "https://www.linkedin.com/in/juanfranciscogiugno",
     languages: ["es", "en"],
