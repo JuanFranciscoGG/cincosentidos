@@ -140,7 +140,6 @@ type Props = { profile: Profile };
 
 export function ProfileClient({ profile }: Props) {
   const [lang, setLang] = useState<Lang>(profile.defaultLang);
-  const [leadStatus, setLeadStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [leadOpen, setLeadOpen] = useState(false);
   const [copiedEmail, setCopiedEmail] = useState(false);
   const [selectedStyle, setSelectedStyle] = useState<string | null>(null);
@@ -249,45 +248,6 @@ export function ProfileClient({ profile }: Props) {
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
-  }
-
-  const isFormValid =
-    form.name.trim().length > 1 &&
-    form.email.trim().length > 3 &&
-    form.whatsapp.trim().length >= 6;
-
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    if (!isFormValid) return;
-    setLeadStatus("loading");
-
-    const payload = {
-      ...form,
-      slug: profile.slug,
-      language: lang,
-    };
-
-    try {
-      const res = await fetch("/api/leads", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      if (!res.ok) throw new Error("bad response");
-      setLeadStatus("success");
-      setForm({
-        name: "",
-        company: "",
-        country: "",
-        email: "",
-        whatsapp: "",
-        interest: "",
-      });
-      track("lead_submitted", { slug: profile.slug, lang });
-    } catch (error) {
-      console.error(error);
-      setLeadStatus("error");
-    }
   }
 
   const selectedStyleOption = useMemo(
@@ -608,8 +568,8 @@ export function ProfileClient({ profile }: Props) {
         */}
 
         {leadOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 px-4 py-6">
-            <div className="w-full max-w-2xl rounded-2xl bg-white p-6 shadow-2xl">
+          <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-slate-900/50 px-4 py-6 md:items-center">
+            <div className="mt-4 w-full max-w-2xl rounded-2xl bg-white p-6 shadow-2xl md:mt-0">
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <h3 className="text-base font-semibold text-slate-800">{uiCopy.leadTitle}</h3>
@@ -623,7 +583,10 @@ export function ProfileClient({ profile }: Props) {
                 </button>
               </div>
 
-              <form className="mt-5 grid gap-4 md:grid-cols-2" onSubmit={handleSubmit}>
+              <form
+                className="mt-5 grid gap-4 md:grid-cols-2"
+                onSubmit={(e) => e.preventDefault()}
+              >
                 <label className="flex flex-col gap-1 text-sm text-slate-700">
                   {uiCopy.name} *
                   <input
@@ -691,13 +654,6 @@ export function ProfileClient({ profile }: Props) {
                 </label>
 
                 <div className="md:col-span-2 flex flex-wrap items-center gap-3">
-                  <button
-                    type="submit"
-                    disabled={!isFormValid || leadStatus === "loading"}
-                    className="rounded-full bg-slate-900 px-6 py-3 text-sm font-semibold text-white shadow transition hover:-translate-y-0.5 hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-60"
-                  >
-                    {leadStatus === "loading" ? uiCopy.sending : uiCopy.submit}
-                  </button>
                   <a
                     href={formWaUrl}
                     onClick={() => track("cta_form_whatsapp", { slug: profile.slug, lang })}
@@ -705,12 +661,6 @@ export function ProfileClient({ profile }: Props) {
                   >
                     {uiCopy.waWithData}
                   </a>
-                  {leadStatus === "success" && (
-                    <span className="text-sm font-semibold text-emerald-600">{uiCopy.success}</span>
-                  )}
-                  {leadStatus === "error" && (
-                    <span className="text-sm font-semibold text-red-600">{uiCopy.error}</span>
-                  )}
                 </div>
               </form>
             </div>

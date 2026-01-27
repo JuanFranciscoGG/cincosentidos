@@ -1,7 +1,7 @@
-import fs from "fs/promises";
 import { NextResponse } from "next/server";
 
-const LOG_PATH = "/tmp/leads-log.jsonl";
+const WEBHOOK_URL = process.env.LEADS_WEBHOOK_URL;
+const WEBHOOK_TOKEN = process.env.LEADS_WEBHOOK_TOKEN;
 
 type LeadPayload = {
   slug?: string;
@@ -32,27 +32,30 @@ export async function POST(req: Request) {
     userAgent: req.headers.get("user-agent") ?? undefined,
   };
 
-  try {
-    await fs.appendFile(LOG_PATH, JSON.stringify(entry) + "\n", {
-      encoding: "utf-8",
-    });
-  } catch (error) {
-    console.warn("No se pudo escribir el log en /tmp", error);
+  if (!WEBHOOK_URL || !WEBHOOK_TOKEN) {
+    console.error("Webhook env vars missing");
+    return NextResponse.json({ message: "Server not configured" }, { status: 500 });
   }
 
-  const webhook = process.env.LEADS_WEBHOOK_URL;
-  if (webhook) {
-    try {
-      await fetch(webhook, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(entry),
-      });
-    } catch (error) {
-      console.error("Webhook error", error);
+  try {
+    const res = await fetch(WEBHOOK_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${WEBHOOK_TOKEN}`,
+      },
+      body: JSON.stringify(entry),
+    });
+
+    if (!res.ok) {
+      const text = await res.text();
+      console.error("Webhook error", res.status, text);
+      return NextResponse.json({ message: "Webhook error" }, { status: 502 });
     }
+  } catch (error) {
+    console.error("Webhook fetch failed", error);
+    return NextResponse.json({ message: "Webhook error" }, { status: 502 });
   }
 
   return NextResponse.json({ ok: true });
 }
-
