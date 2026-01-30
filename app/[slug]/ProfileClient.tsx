@@ -386,34 +386,6 @@ export function ProfileClient({ profile }: Props) {
             </span>
           </a>
 
-          <a
-            href={profile.catalogUrl}
-            target="_blank"
-            rel="noreferrer"
-            onClick={() => track("cta_catalog", { slug: profile.slug, lang })}
-            className="flex w/full items-center justify-between rounded-2xl border border-slate-200 bg-white px-4 py-4 text-slate-900 shadow-lg transition hover:-translate-y-0.5 hover:shadow-xl min-h-[92px]"
-          >
-            <div>
-              <p className="text-sm text-slate-500">{uiCopy.catalog}</p>
-              <p className="text-lg font-semibold">{uiCopy.catalogLabel}</p>
-            </div>
-            <span aria-hidden className="text-slate-500">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.6"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M9 5h6" />
-                <path d="M10 2h4v3h-4z" />
-                <path d="M10 5v3.5a3 3 0 0 1-.6 1.8l-.8 1.1a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h3.6a2 2 0 0 0 2-2v-7.4a2 2 0 0 0-.4-1.2l-.8-1.1a3 3 0 0 1-.6-1.8V5" />
-              </svg>
-            </span>
-          </a>
         </section>
 
         {/* Copy buttons removed per request */}
