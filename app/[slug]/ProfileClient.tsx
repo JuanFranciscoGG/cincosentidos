@@ -190,12 +190,14 @@ export function ProfileClient({ profile }: Props) {
 
   const interestOptions = uiCopy.interestOptions;
   const formWaUrl = (() => {
-    const placeholder = "[complete aquí]";
-    const emailPlaceholder = "correo@dominio.com";
+    const actor =
+      form.name?.trim() ||
+      form.company?.trim() ||
+      "_ (Nombre/Empresa)";
     const template =
       lang === "en"
-        ? `Hi, my name is ${form.name || placeholder}.\nI represent ${form.company || placeholder} and I'm contacting you from ${form.country || placeholder}.\n\nMy contact email is: ${form.email || "email@example.com"}\n\nMy interest is:\n${form.interest || placeholder}`
-        : `Hola, mi nombre es ${form.name || placeholder}.\nRepresento a ${form.company || placeholder} y me contacto desde ${form.country || placeholder}.\n\nMi correo electrónico de contacto es: ${form.email || emailPlaceholder}\n\nEl interés por el cual me comunico es el siguiente:\n${form.interest || placeholder}`;
+        ? `Hi, I'm ${actor}. I met Cinco Sentidos at Wine Paris and I'd like more information.`
+        : `Hola, soy ${actor}. Conocí Cinco Sentidos en Wine Paris y me gustaría tener más información.`;
     return `https://wa.me/${waPhone}?text=${encodeURIComponent(template)}`;
   })();
 
