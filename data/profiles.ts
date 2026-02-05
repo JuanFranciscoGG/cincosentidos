@@ -72,8 +72,8 @@ export const profiles: Profile[] = [
       en: "Cinco Sentidos is a family-run boutique winery from Mendoza dedicated to crafting high-quality wines with a strong identity. We focus on detail from vineyard to bottle, prioritizing consistency and character.",
     },
     whatsappPrefill: {
-      es: "Hola, soy ___ (Nombre/Empresa). Te conocí en Wine Paris y me interesa conocer más sobre sus vinos.",
-      en: "Hi, I'm ___ (Name/Company). I met you at Wine Paris and I'd like to know more about your wines.",
+      es: "Hola, soy ___ (Nombre/Empresa). Conocí Cinco Sentidos en Wine Paris y me gustaría tener más información.",
+      en: "Hi, I'm ___ (Name/Company). I met Cinco Sentidos at Wine Paris and I'd like more information.",
     },
     wines: [
       {
@@ -210,8 +210,8 @@ export const profiles: Profile[] = [
       en: "Cinco Sentidos is a family-run boutique winery from Mendoza dedicated to crafting high-quality wines with a strong identity. We focus on detail from vineyard to bottle, prioritizing consistency and character.",
     },
     whatsappPrefill: {
-      es: "Hola, soy ___ (Nombre/Empresa). Te conocí en Wine Paris y quiero sumar sus vinos al portfolio.",
-      en: "Hi, I'm ___ (Name/Company). Met you at Wine Paris and want to add your wines to our portfolio.",
+      es: "Hola, soy ___ (Nombre/Empresa). Conocí Cinco Sentidos en Wine Paris y me gustaría tener más información.",
+      en: "Hi, I'm ___ (Name/Company). I met Cinco Sentidos at Wine Paris and I'd like more information.",
     },
     wines: [
       {
